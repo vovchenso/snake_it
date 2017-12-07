@@ -137,9 +137,16 @@ const drawDot = (context, body) => {
 
 const loop = (context, body) => {
     drawSnake(context, body, true);
+
     move(context, body);
     drawSnake(context, body);
-    setTimeout(() => loop(context, body), SPEED);
+
+    setTimeout(() =>
+        requestAnimationFrame(() =>
+            loop(context, body)
+        ),
+        SPEED
+    );
 };
 
 const updateInfo = () => {
