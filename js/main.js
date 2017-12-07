@@ -1,5 +1,6 @@
 const STAGE_ID = '_stage';
 const GAME_ID = '_game';
+const INFO_ID = '_info';
 const HEIGHT = 400;
 const WIDTH = 600;
 const STEP = 10;
@@ -20,7 +21,8 @@ const COLORS = {
     Hidden: '#000'
 };
 
-let SPEED = 102;
+let SPEED = 100;
+let score = 0;
 
 let direction = DIRECTIONS.Up;
 let dot = [-1, -1];
@@ -88,6 +90,7 @@ const move = (context, body) => {
     body.unshift([x, y]);
 
     if (x === dot[0] && y === dot[1]) {
+        score++;
         drawDot(context, body);
         if (SPEED > 40) {
             SPEED -= 2;
@@ -124,6 +127,8 @@ const drawDot = (context, body) => {
 
     generateDot(body);
 
+    updateInfo();
+
     context.beginPath();
     context.fillStyle = COLORS.Dot;
     context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
@@ -135,6 +140,11 @@ const loop = (context, body) => {
     move(context, body);
     drawSnake(context, body);
     setTimeout(() => loop(context, body), SPEED);
+};
+
+const updateInfo = () => {
+    const info = document.getElementById(INFO_ID);
+    info.innerText = `SCORE: ${score}`;
 };
 
 const game = context => {

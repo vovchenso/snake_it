@@ -7,6 +7,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
+    position: relative;
 }
 
 main {
@@ -25,4 +26,12 @@ canvas#_stage {
     top: 0;
     left: 0;
     border: 1px solid #0f0;
+}
+
+#_info {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #707070;
+    width: 100px;
 }
