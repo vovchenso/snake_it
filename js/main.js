@@ -40,7 +40,6 @@ const drawStage = context => {
     }
 
     context.strokeStyle = COLORS.Main;
-    context.lineWidth = 1;
     context.stroke();
 };
 
@@ -94,6 +93,8 @@ const move = (context, body) => {
         drawDot(context, body);
         if (SPEED > 40) {
             SPEED -= 2;
+        } else if (SPEED > 20) {
+            SPEED--;
         }
     } else {
         body.pop();
@@ -126,12 +127,12 @@ const drawDot = (context, body) => {
     context.fill();
 
     generateDot(body);
-
     updateInfo();
 
     context.beginPath();
-    context.fillStyle = COLORS.Dot;
     context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
+
+    context.fillStyle = COLORS.Dot;
     context.fill();
 };
 
@@ -196,13 +197,13 @@ const setDirection = arrow => {
     }
 };
 
+const getContext = id => document.getElementById(id).getContext('2d');
+
 const run = () => {
-    const canvasStage = document.getElementById(STAGE_ID);
-    const contextStage = canvasStage.getContext('2d');
+    const contextStage = getContext(STAGE_ID);
     drawStage(contextStage);
 
-    const canvasGame = document.getElementById(GAME_ID);
-    const contextGame = canvasGame.getContext('2d');
+    const contextGame = getContext(GAME_ID);
     game(contextGame);
 
     document.body.addEventListener('keydown', event => {
