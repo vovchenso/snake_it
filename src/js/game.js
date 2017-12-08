@@ -1,47 +1,18 @@
-const STAGE_ID = '_stage';
-const GAME_ID = '_game';
-const INFO_ID = '_info';
-const HEIGHT = 400;
-const WIDTH = 600;
-const STEP = 10;
-
-const MAX_WIDTH = WIDTH / STEP;
-const MAX_HEIGHT = HEIGHT / STEP;
-
-const DIRECTIONS = {
-    Up: 'ArrowUp',
-    Right: 'ArrowRight',
-    Down: 'ArrowDown',
-    Left: 'ArrowLeft'
-};
-
-const COLORS = {
-    Main: '#0f0',
-    Dot: '#ff0',
-    Hidden: '#000'
-};
+import {
+    COLORS,
+    DIRECTIONS,
+    MAX_HEIGHT,
+    MAX_WIDTH,
+    STEP
+} from './config';
+import { intercept } from './utils';
+import info from './info';
 
 let SPEED = 100;
 let score = 0;
 
 let direction = DIRECTIONS.Up;
 let dot = [-1, -1];
-
-
-const drawStage = context => {
-    for (let x = 0; x <= WIDTH; x+= STEP) {
-        context.moveTo(x, 0);
-        context.lineTo(x, HEIGHT);
-    }
-
-    for (let y = 0; y <= HEIGHT; y+= STEP) {
-        context.moveTo(0, y);
-        context.lineTo(WIDTH, y);
-    }
-
-    context.strokeStyle = COLORS.Main;
-    context.stroke();
-};
 
 const drawSnake = (context, body, hide = false) => {
     context.beginPath();
@@ -101,16 +72,6 @@ const move = (context, body) => {
     }
 };
 
-const intercept = body => {
-    for (let i = 0; i < body.length; i++) {
-        if (dot[0] === body[i][0] && dot[1] === body[i][1]) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
 const generateDot = body => {
     do {
         dot = [
@@ -127,7 +88,7 @@ const drawDot = (context, body) => {
     context.fill();
 
     generateDot(body);
-    updateInfo();
+    info({ score });
 
     context.beginPath();
     context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
@@ -143,30 +104,14 @@ const loop = (context, body) => {
     drawSnake(context, body);
 
     setTimeout(() =>
-        requestAnimationFrame(() =>
-            loop(context, body)
-        ),
+            requestAnimationFrame(() =>
+                loop(context, body)
+            ),
         SPEED
     );
 };
 
-const updateInfo = () => {
-    const info = document.getElementById(INFO_ID);
-    info.innerText = `SCORE: ${score}`;
-};
-
-const game = context => {
-    const body = [
-        [10, 10],
-        [10, 11],
-        [10, 12]
-    ];
-
-    drawDot(context, body);
-    loop(context, body);
-};
-
-const setDirection = arrow => {
+export const setDirection = arrow => {
     switch (arrow) {
         case DIRECTIONS.Up:
             if (direction !== DIRECTIONS.Down) {
@@ -197,20 +142,19 @@ const setDirection = arrow => {
     }
 };
 
-const getContext = id => document.getElementById(id).getContext('2d');
-
-const run = () => {
-    const contextStage = getContext(STAGE_ID);
-    drawStage(contextStage);
-
-    const contextGame = getContext(GAME_ID);
-    game(contextGame);
-
+export default game = context => {
     document.body.addEventListener('keydown', event => {
         if (~Object.values(DIRECTIONS).indexOf(event.key)) {
             setDirection(event.key);
         }
     });
-};
 
-run();
+    const body = [
+        [10, 10],
+        [10, 11],
+        [10, 12]
+    ];
+
+    drawDot(context, body);
+    loop(context, body);
+};
