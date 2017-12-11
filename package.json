@@ -4,7 +4,9 @@
   "description": "Super awesome Snake game",
   "main": "js/index.js",
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack",
+    "client": "",
+    "server": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
