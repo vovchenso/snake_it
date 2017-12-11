@@ -78,7 +78,7 @@ const generateDot = body => {
             Math.round(Math.random() * (MAX_WIDTH - 1)),
             Math.round(Math.random() * (MAX_HEIGHT - 1))
         ];
-    } while(intercept(body));
+    } while(intercept(body, dot));
 };
 
 const drawDot = (context, body) => {
@@ -142,7 +142,7 @@ export const setDirection = arrow => {
     }
 };
 
-export default game = context => {
+const game = context => {
     document.body.addEventListener('keydown', event => {
         if (~Object.values(DIRECTIONS).indexOf(event.key)) {
             setDirection(event.key);
@@ -158,3 +158,5 @@ export default game = context => {
     drawDot(context, body);
     loop(context, body);
 };
+
+export default game;

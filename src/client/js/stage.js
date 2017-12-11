@@ -5,7 +5,7 @@ import {
     WIDTH
 } from './config';
 
-export default stage = context => {
+const stage = context => {
     for (let x = 0; x <= WIDTH; x+= STEP) {
         context.moveTo(x, 0);
         context.lineTo(x, HEIGHT);
@@ -19,3 +19,5 @@ export default stage = context => {
     context.strokeStyle = COLORS.Main;
     context.stroke();
 };
+
+export default stage;
