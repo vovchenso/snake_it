@@ -10,11 +10,30 @@ body {
     position: relative;
 }
 
-main {
+main, nav {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+main {
+    display: none;
+}
+
+nav button {
+    border: 1px solid #0f0;
+    background-color: #000;
+    color: #0f0;
+    display: block;
+    width: 147px;
+    padding: 5px 0;
+    margin: 10px 0;
+}
+
+nav button:active {
+    border: 1px solid #ff0;
+    color: #ff0;
 }
 
 main > div {

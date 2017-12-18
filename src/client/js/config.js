@@ -20,3 +20,8 @@ export const COLORS = {
     Dot: '#ff0',
     Hidden: '#000'
 };
+
+export const GAME_TYPE = {
+    Standard: 'standard',
+    Multiplayer: 'multiplayer'
+};

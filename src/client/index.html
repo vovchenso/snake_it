@@ -7,13 +7,19 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+        <nav>
+            <div>
+                <button data-type="standard">STANDARD</button>
+                <button data-type="multiplayer">MULTIPLAYER</button>
+            </div>
+        </nav>
         <main>
             <div>
                 <canvas id="_stage" width="600" height="400"></canvas>
                 <canvas id="_game" width="600" height="400"></canvas>
             </div>
+            <pre id="_info"></pre>
         </main>
-        <pre id="_info"></pre>
         <script src="dist/main.js"></script>
     </body>
 </html>

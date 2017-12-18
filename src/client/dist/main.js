@@ -69,29 +69,29 @@
 
 "use strict";
 const STAGE_ID = '_stage';
-/* harmony export (immutable) */ __webpack_exports__["h"] = STAGE_ID;
+/* harmony export (immutable) */ __webpack_exports__["i"] = STAGE_ID;
 
 const GAME_ID = '_game';
 /* harmony export (immutable) */ __webpack_exports__["c"] = GAME_ID;
 
 const INFO_ID = '_info';
-/* harmony export (immutable) */ __webpack_exports__["e"] = INFO_ID;
+/* harmony export (immutable) */ __webpack_exports__["f"] = INFO_ID;
 
 const HEIGHT = 400;
-/* harmony export (immutable) */ __webpack_exports__["d"] = HEIGHT;
+/* harmony export (immutable) */ __webpack_exports__["e"] = HEIGHT;
 
 const WIDTH = 600;
-/* harmony export (immutable) */ __webpack_exports__["j"] = WIDTH;
+/* harmony export (immutable) */ __webpack_exports__["k"] = WIDTH;
 
 const STEP = 10;
-/* harmony export (immutable) */ __webpack_exports__["i"] = STEP;
+/* harmony export (immutable) */ __webpack_exports__["j"] = STEP;
 
 
 const MAX_WIDTH = WIDTH / STEP;
-/* harmony export (immutable) */ __webpack_exports__["g"] = MAX_WIDTH;
+/* harmony export (immutable) */ __webpack_exports__["h"] = MAX_WIDTH;
 
 const MAX_HEIGHT = HEIGHT / STEP;
-/* harmony export (immutable) */ __webpack_exports__["f"] = MAX_HEIGHT;
+/* harmony export (immutable) */ __webpack_exports__["g"] = MAX_HEIGHT;
 
 
 const DIRECTIONS = {
@@ -109,6 +109,13 @@ const COLORS = {
     Hidden: '#000'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = COLORS;
+
+
+const GAME_TYPE = {
+    Standard: 'standard',
+    Multiplayer: 'multiplayer'
+};
+/* harmony export (immutable) */ __webpack_exports__["d"] = GAME_TYPE;
 
 
 
@@ -139,28 +146,72 @@ const intercept = (data, dot) => {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__menu__ = __webpack_require__(3);
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__menu__["a" /* default */])();
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__runner__ = __webpack_require__(4);
+
+
+const menu = () => {
+    const items = document.querySelectorAll('nav button');
+    Array.from(items).forEach(button => {
+        button.addEventListener('click', event => {
+            event.preventDefault();
+            const type = event.currentTarget.getAttribute('data-type');
+            Object(__WEBPACK_IMPORTED_MODULE_0__runner__["a" /* default */])(type);
+        });
+    });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (menu);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stage__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__game__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stage__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__game__ = __webpack_require__(6);
 
 
 
 
 
 
-const run = () => {
-    const contextStage = Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* getCanvasContext */])(__WEBPACK_IMPORTED_MODULE_0__config__["h" /* STAGE_ID */]);
+
+const showMainArea = () => {
+    document.querySelector('nav').style.display = 'none';
+    document.querySelector('main').style.display = 'flex';
+};
+
+const runner = type => {
+    showMainArea();
+
+    if (__WEBPACK_IMPORTED_MODULE_0__config__["d" /* GAME_TYPE */].Multiplayer === type) {
+        console.warn('Mutiplayer mode currently is under development.')
+    }
+
+    const contextStage = Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* getCanvasContext */])(__WEBPACK_IMPORTED_MODULE_0__config__["i" /* STAGE_ID */]);
     Object(__WEBPACK_IMPORTED_MODULE_2__stage__["a" /* default */])(contextStage);
 
     const contextGame = Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* getCanvasContext */])(__WEBPACK_IMPORTED_MODULE_0__config__["c" /* GAME_ID */]);
     Object(__WEBPACK_IMPORTED_MODULE_3__game__["a" /* default */])(contextGame);
 };
 
-run();
+/* harmony default export */ __webpack_exports__["a"] = (runner);
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -168,14 +219,14 @@ run();
 
 
 const stage = context => {
-    for (let x = 0; x <= __WEBPACK_IMPORTED_MODULE_0__config__["j" /* WIDTH */]; x+= __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */]) {
+    for (let x = 0; x <= __WEBPACK_IMPORTED_MODULE_0__config__["k" /* WIDTH */]; x+= __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */]) {
         context.moveTo(x, 0);
-        context.lineTo(x, __WEBPACK_IMPORTED_MODULE_0__config__["d" /* HEIGHT */]);
+        context.lineTo(x, __WEBPACK_IMPORTED_MODULE_0__config__["e" /* HEIGHT */]);
     }
 
-    for (let y = 0; y <= __WEBPACK_IMPORTED_MODULE_0__config__["d" /* HEIGHT */]; y+= __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */]) {
+    for (let y = 0; y <= __WEBPACK_IMPORTED_MODULE_0__config__["e" /* HEIGHT */]; y+= __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */]) {
         context.moveTo(0, y);
-        context.lineTo(__WEBPACK_IMPORTED_MODULE_0__config__["j" /* WIDTH */], y);
+        context.lineTo(__WEBPACK_IMPORTED_MODULE_0__config__["k" /* WIDTH */], y);
     }
 
     context.strokeStyle = __WEBPACK_IMPORTED_MODULE_0__config__["a" /* COLORS */].Main;
@@ -185,13 +236,13 @@ const stage = context => {
 /* harmony default export */ __webpack_exports__["a"] = (stage);
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__info__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__info__ = __webpack_require__(7);
 
 
 
@@ -208,7 +259,7 @@ const drawSnake = (context, body, hide = false) => {
 
     body.forEach(part => {
         const [x, y] = part;
-        context.rect(x * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, y * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */]);
+        context.rect(x * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, y * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */]);
         context.fill();
     });
 };
@@ -219,24 +270,24 @@ const move = (context, body) => {
     switch (direction) {
         case __WEBPACK_IMPORTED_MODULE_0__config__["b" /* DIRECTIONS */].Up:
             if (--y === -1) {
-                y = __WEBPACK_IMPORTED_MODULE_0__config__["f" /* MAX_HEIGHT */] - 1;
+                y = __WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_HEIGHT */] - 1;
             }
             break;
 
         case __WEBPACK_IMPORTED_MODULE_0__config__["b" /* DIRECTIONS */].Down:
-            if (++y === __WEBPACK_IMPORTED_MODULE_0__config__["f" /* MAX_HEIGHT */]) {
+            if (++y === __WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_HEIGHT */]) {
                 y = 0;
             }
             break;
 
         case __WEBPACK_IMPORTED_MODULE_0__config__["b" /* DIRECTIONS */].Left:
             if (--x === -1) {
-                x = __WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_WIDTH */] - 1;
+                x = __WEBPACK_IMPORTED_MODULE_0__config__["h" /* MAX_WIDTH */] - 1;
             }
             break;
 
         case __WEBPACK_IMPORTED_MODULE_0__config__["b" /* DIRECTIONS */].Right:
-            if (++x === __WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_WIDTH */]) {
+            if (++x === __WEBPACK_IMPORTED_MODULE_0__config__["h" /* MAX_WIDTH */]) {
                 x = 0;
             }
             break;
@@ -263,8 +314,8 @@ const move = (context, body) => {
 const generateDot = body => {
     do {
         dot = [
-            Math.round(Math.random() * (__WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_WIDTH */] - 1)),
-            Math.round(Math.random() * (__WEBPACK_IMPORTED_MODULE_0__config__["f" /* MAX_HEIGHT */] - 1))
+            Math.round(Math.random() * (__WEBPACK_IMPORTED_MODULE_0__config__["h" /* MAX_WIDTH */] - 1)),
+            Math.round(Math.random() * (__WEBPACK_IMPORTED_MODULE_0__config__["g" /* MAX_HEIGHT */] - 1))
         ];
     } while(Object(__WEBPACK_IMPORTED_MODULE_1__utils__["b" /* intercept */])(body, dot));
 };
@@ -272,14 +323,14 @@ const generateDot = body => {
 const drawDot = (context, body) => {
     context.beginPath();
     context.fillStyle = __WEBPACK_IMPORTED_MODULE_0__config__["a" /* COLORS */].Hidden;
-    context.rect(dot[0] * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, dot[1] * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */]);
+    context.rect(dot[0] * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, dot[1] * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */]);
     context.fill();
 
     generateDot(body);
     Object(__WEBPACK_IMPORTED_MODULE_2__info__["a" /* default */])({ score });
 
     context.beginPath();
-    context.rect(dot[0] * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, dot[1] * __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["i" /* STEP */]);
+    context.rect(dot[0] * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, dot[1] * __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */] + 1, __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */], __WEBPACK_IMPORTED_MODULE_0__config__["j" /* STEP */]);
 
     context.fillStyle = __WEBPACK_IMPORTED_MODULE_0__config__["a" /* COLORS */].Dot;
     context.fill();
@@ -352,7 +403,7 @@ const game = context => {
 /* harmony default export */ __webpack_exports__["a"] = (game);
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -360,7 +411,7 @@ const game = context => {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ((data) => {
-    const info = document.getElementById(__WEBPACK_IMPORTED_MODULE_0__config__["e" /* INFO_ID */]);
+    const info = document.getElementById(__WEBPACK_IMPORTED_MODULE_0__config__["f" /* INFO_ID */]);
     info.innerText = `SCORE: ${data.score}`;
 });
 
