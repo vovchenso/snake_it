@@ -22,9 +22,9 @@ const runner = type => {
     }
 
     const contextStage = getCanvasContext(STAGE_ID);
-    stage(contextStage);
-
     const contextGame = getCanvasContext(GAME_ID);
+    
+    stage(contextStage);
     game(contextGame);
 };
 
