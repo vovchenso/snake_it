@@ -23,5 +23,5 @@ export const COLORS = {
 
 export const GAME_TYPE = {
     Standard: 'standard',
-    Multiplayer: 'multiplayer'
+    MultiPlayer: 'multiplayer'
 };

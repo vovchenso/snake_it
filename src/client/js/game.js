@@ -62,13 +62,17 @@ const move = (context, body) => {
     if (x === dot[0] && y === dot[1]) {
         score++;
         drawDot(context, body);
-        if (SPEED > 40) {
-            SPEED -= 2;
-        } else if (SPEED > 20) {
-            SPEED--;
-        }
+        increaseSpeed();
     } else {
         body.pop();
+    }
+};
+
+const increaseSpeed = () => {
+    if (SPEED > 40) {
+        SPEED -= 2;
+    } else if (SPEED > 20) {
+        SPEED--;
     }
 };
 
@@ -104,9 +108,9 @@ const loop = (context, body) => {
     drawSnake(context, body);
 
     setTimeout(() =>
-            requestAnimationFrame(() =>
-                loop(context, body)
-            ),
+        requestAnimationFrame(() =>
+            loop(context, body)
+        ),
         SPEED
     );
 };
