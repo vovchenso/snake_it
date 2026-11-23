@@ -1,7 +1,8 @@
-package main
+package game
 
 import (
 	"math/rand"
+	"slices"
 	"time"
 )
 
@@ -44,8 +45,7 @@ type Snake struct {
 	Score    int
 }
 
-// Game holds the shared board. It is not safe for concurrent use; the hub
-// goroutine owns it.
+// Game holds the shared board. It is not safe for concurrent use; the hub goroutine owns it.
 type Game struct {
 	Snakes  [2]*Snake
 	Dot     Point
@@ -55,7 +55,7 @@ type Game struct {
 	tieFlip bool
 }
 
-func NewGame(rng *rand.Rand) *Game {
+func New(rng *rand.Rand) *Game {
 	g := &Game{rng: rng}
 	g.spawnDot()
 	return g
@@ -160,13 +160,8 @@ func (g *Game) spawnDot() {
 
 func (g *Game) occupied(p Point) bool {
 	for _, s := range g.Snakes {
-		if s == nil {
-			continue
-		}
-		for _, b := range s.Body {
-			if b == p {
-				return true
-			}
+		if s != nil && slices.Contains(s.Body, p) {
+			return true
 		}
 	}
 	return false

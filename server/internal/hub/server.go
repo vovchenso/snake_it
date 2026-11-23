@@ -1,4 +1,4 @@
-package main
+package hub
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+
+	"github.com/vovchenso/snake_it/server/internal/game"
 )
 
 // Peers that don't answer a ping within pingTimeout are disconnected, so a
@@ -66,7 +68,7 @@ func serveWS(h *Hub, w http.ResponseWriter, r *http.Request, pingEvery, pingTime
 		if json.Unmarshal(b, &m) != nil || m.Type != "dir" {
 			continue
 		}
-		if d, ok := ParseDirection(m.Dir); ok {
+		if d, ok := game.ParseDirection(m.Dir); ok {
 			h.Input(c, d)
 		}
 	}

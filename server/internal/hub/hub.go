@@ -1,4 +1,4 @@
-package main
+package hub
 
 import (
 	"context"
@@ -6,6 +6,8 @@ import (
 	"log"
 	"math/rand"
 	"time"
+
+	"github.com/vovchenso/snake_it/server/internal/game"
 )
 
 const sendBuffer = 16
@@ -17,11 +19,11 @@ type Client struct {
 	slot int
 }
 
-func NewClient() *Client { 
+func NewClient() *Client {
 	return &Client{
-		send: make(chan []byte, sendBuffer), 
+		send: make(chan []byte, sendBuffer),
 		slot: -1,
-	} 
+	}
 }
 
 type joinReq struct {
@@ -31,13 +33,13 @@ type joinReq struct {
 
 type inputReq struct {
 	c *Client
-	d Direction
+	d game.Direction
 }
 
 // Hub owns the Game; Run is the only goroutine that touches it.
 type Hub struct {
 	rng     *rand.Rand
-	game    *Game
+	game    *game.Game
 	clients [2]*Client
 
 	join  chan joinReq
@@ -45,10 +47,10 @@ type Hub struct {
 	input chan inputReq
 }
 
-func NewHub(rng *rand.Rand) *Hub {
+func New(rng *rand.Rand) *Hub {
 	return &Hub{
 		rng:   rng,
-		game:  NewGame(rng),
+		game:  game.New(rng),
 		join:  make(chan joinReq),
 		leave: make(chan *Client),
 		input: make(chan inputReq, 64),
@@ -65,7 +67,7 @@ func (h *Hub) Join(c *Client) bool {
 
 func (h *Hub) Leave(c *Client) { h.leave <- c }
 
-func (h *Hub) Input(c *Client, d Direction) { h.input <- inputReq{c, d} }
+func (h *Hub) Input(c *Client, d game.Direction) { h.input <- inputReq{c, d} }
 
 func (h *Hub) Run(ctx context.Context) {
 	timer := time.NewTimer(time.Hour)
@@ -108,7 +110,7 @@ func (h *Hub) addClient(c *Client) bool {
 		c.slot = slot
 		h.clients[slot] = c
 		h.game.AddSnake(slot, time.Now())
-		welcome, _ := json.Marshal(map[string]any{"type": "welcome", "you": slot, "width": Width, "height": Height})
+		welcome, _ := json.Marshal(map[string]any{"type": "welcome", "you": slot, "width": game.Width, "height": game.Height})
 		c.send <- welcome // fresh buffered channel: never blocks
 		return true
 	}
@@ -124,7 +126,7 @@ func (h *Hub) removeClient(c *Client) bool {
 	h.game.RemoveSnake(c.slot)
 	close(c.send)
 	if h.game.Empty() {
-		h.game = NewGame(h.rng)
+		h.game = game.New(h.rng)
 	}
 	return true
 }

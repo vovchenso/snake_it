@@ -1,4 +1,4 @@
-package main
+package hub
 
 import (
 	"context"
@@ -15,7 +15,7 @@ import (
 func startServer(t *testing.T) *httptest.Server {
 	t.Helper()
 	ctx, cancel := context.WithCancel(context.Background())
-	hub := NewHub(rand.New(rand.NewSource(1)))
+	hub := New(rand.New(rand.NewSource(1)))
 	go hub.Run(ctx)
 	srv := httptest.NewServer(NewServer(hub, t.TempDir()))
 	t.Cleanup(func() { srv.Close(); cancel() })
@@ -194,7 +194,7 @@ func TestEmptyGameResets(t *testing.T) {
 func TestSlowClientDropped(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	hub := NewHub(rand.New(rand.NewSource(1)))
+	hub := New(rand.New(rand.NewSource(1)))
 	go hub.Run(ctx)
 
 	slow := NewClient()
@@ -239,7 +239,7 @@ func TestSlowClientDropped(t *testing.T) {
 // pings) must lose its slot, so the other player and newcomers aren't stuck.
 func TestDeadPeerDropped(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	hub := NewHub(rand.New(rand.NewSource(1)))
+	hub := New(rand.New(rand.NewSource(1)))
 	go hub.Run(ctx)
 	srv := httptest.NewServer(newServer(hub, t.TempDir(), 50*time.Millisecond, 200*time.Millisecond))
 	t.Cleanup(func() { srv.Close(); cancel() })

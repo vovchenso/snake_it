@@ -7,6 +7,8 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
+
+	"github.com/vovchenso/snake_it/server/internal/hub"
 )
 
 func main() {
@@ -14,9 +16,9 @@ func main() {
 	static := flag.String("static", "../client", "directory with the client files")
 	flag.Parse()
 
-	hub := NewHub(rand.New(rand.NewSource(time.Now().UnixNano())))
-	go hub.Run(context.Background())
+	h := hub.New(rand.New(rand.NewSource(time.Now().UnixNano())))
+	go h.Run(context.Background())
 
 	log.Printf("listening on %s", *addr)
-	log.Fatal(http.ListenAndServe(*addr, NewServer(hub, *static)))
+	log.Fatal(http.ListenAndServe(*addr, hub.NewServer(h, *static)))
 }

@@ -1,9 +1,10 @@
-package main
+package game
 
 import (
 	"encoding/json"
 	"math/rand"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -12,7 +13,7 @@ import (
 var t0 = time.Unix(0, 0)
 
 func newTestGame() *Game {
-	return NewGame(rand.New(rand.NewSource(1)))
+	return New(rand.New(rand.NewSource(1)))
 }
 
 func head(s *Snake) Point { return s.Body[0] }
@@ -168,13 +169,8 @@ func TestEatGrowsScoresSpeedsUpAndRespawns(t *testing.T) {
 
 func onAnyBody(g *Game, p Point) bool {
 	for _, s := range g.Snakes {
-		if s == nil {
-			continue
-		}
-		for _, b := range s.Body {
-			if b == p {
-				return true
-			}
+		if s != nil && slices.Contains(s.Body, p) {
+			return true
 		}
 	}
 	return false

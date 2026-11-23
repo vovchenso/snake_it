@@ -10,5 +10,5 @@
         "verbatimModuleSyntax": false,
         "skipLibCheck": true
     },
-    "include": ["ts"]
+    "include": ["src"]
 }
