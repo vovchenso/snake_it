@@ -5,7 +5,7 @@ import {
     WIDTH
 } from './config';
 
-const stage = context => {
+const stage = (context: CanvasRenderingContext2D): void => {
     for (let x = 0; x <= WIDTH; x+= STEP) {
         context.moveTo(x, 0);
         context.lineTo(x, HEIGHT);

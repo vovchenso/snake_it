@@ -2,11 +2,11 @@
   "name": "snake_it",
   "version": "1.0.0",
   "description": "Super awesome Snake game",
-  "main": "js/index.js",
+  "main": "ts/index.ts",
   "scripts": {
-    "build": "webpack --config src/client/webpack.config.js",
-    "client": "",
-    "server": "node server/index.js",
+    "build": "esbuild ts/index.ts --bundle --format=iife --target=es2017 --outfile=dist/main.js",
+    "watch": "npm run build -- --watch",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/vovchenso/snake_it#readme",
   "devDependencies": {
-    "webpack": "^3.10.0"
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
   }
 }

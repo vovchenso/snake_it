@@ -3,7 +3,9 @@ import {
     DIRECTIONS,
     MAX_HEIGHT,
     MAX_WIDTH,
-    STEP
+    STEP,
+    Direction,
+    Point
 } from './config';
 import { intercept } from './utils';
 import info from './info';
@@ -11,10 +13,10 @@ import info from './info';
 let SPEED = 100;
 let score = 0;
 
-let direction = DIRECTIONS.Up;
-let dot = [-1, -1];
+let direction: Direction = DIRECTIONS.Up;
+let dot: Point = [-1, -1];
 
-const drawSnake = (context, body, hide = false) => {
+const drawSnake = (context: CanvasRenderingContext2D, body: Point[], hide = false): void => {
     context.beginPath();
     context.fillStyle = hide ? COLORS.Hidden : COLORS.Main;
 
@@ -25,7 +27,7 @@ const drawSnake = (context, body, hide = false) => {
     });
 };
 
-const move = (context, body) => {
+const move = (context: CanvasRenderingContext2D, body: Point[]): void => {
     let [x, y] = body[0];
 
     switch (direction) {
@@ -72,7 +74,7 @@ const move = (context, body) => {
     }
 };
 
-const generateDot = body => {
+const generateDot = (body: Point[]): void => {
     do {
         dot = [
             Math.round(Math.random() * (MAX_WIDTH - 1)),
@@ -81,7 +83,7 @@ const generateDot = body => {
     } while(intercept(body, dot));
 };
 
-const drawDot = (context, body) => {
+const drawDot = (context: CanvasRenderingContext2D, body: Point[]): void => {
     context.beginPath();
     context.fillStyle = COLORS.Hidden;
     context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
@@ -97,7 +99,7 @@ const drawDot = (context, body) => {
     context.fill();
 };
 
-const loop = (context, body) => {
+const loop = (context: CanvasRenderingContext2D, body: Point[]): void => {
     drawSnake(context, body, true);
 
     move(context, body);
@@ -111,7 +113,7 @@ const loop = (context, body) => {
     );
 };
 
-export const setDirection = arrow => {
+export const setDirection = (arrow: Direction): void => {
     switch (arrow) {
         case DIRECTIONS.Up:
             if (direction !== DIRECTIONS.Down) {
@@ -142,14 +144,17 @@ export const setDirection = arrow => {
     }
 };
 
-const game = context => {
-    document.body.addEventListener('keydown', event => {
-        if (~Object.values(DIRECTIONS).indexOf(event.key)) {
+const isDirection = (key: string): key is Direction =>
+    (Object.values(DIRECTIONS) as string[]).includes(key);
+
+const game = (context: CanvasRenderingContext2D): void => {
+    document.body.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (isDirection(event.key)) {
             setDirection(event.key);
         }
     });
 
-    const body = [
+    const body: Point[] = [
         [10, 10],
         [10, 11],
         [10, 12]

@@ -13,10 +13,14 @@ export const DIRECTIONS = {
     Right: 'ArrowRight',
     Down: 'ArrowDown',
     Left: 'ArrowLeft'
-};
+} as const;
+
+export type Direction = typeof DIRECTIONS[keyof typeof DIRECTIONS];
 
 export const COLORS = {
     Main: '#0f0',
     Dot: '#ff0',
     Hidden: '#000'
-};
+} as const;
+
+export type Point = [number, number];
