@@ -22,8 +22,7 @@ export type Direction = typeof DIRECTIONS[keyof typeof DIRECTIONS];
 export const COLORS = {
     Main: '#0f0',
     Player2: '#0ff',
-    Dot: '#ff0',
-    Hidden: '#000'
+    Dot: '#ff0'
 } as const;
 
 export type Point = [number, number];

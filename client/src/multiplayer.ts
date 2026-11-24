@@ -3,13 +3,10 @@ import {
     DEFAULT_WS_URL,
     DIRECTIONS,
     Direction,
-    HEIGHT,
     MAX_HEIGHT,
-    MAX_WIDTH,
-    Point,
-    STEP,
-    WIDTH
+    MAX_WIDTH
 } from './config';
+import { clearBoard, drawDot, drawSnake } from './draw';
 import { setInfoLines } from './info';
 import { hideOverlay, showStatus } from './menu';
 import { ClientMessage, ServerMessage, StateMessage } from './protocol';
@@ -27,19 +24,12 @@ export const wsUrl = (loc: Location): string => {
     }
 };
 
-const fillCells = (context: CanvasRenderingContext2D, cells: Point[], color: string): void => {
-    context.beginPath();
-    context.fillStyle = color;
-    cells.forEach(([x, y]) => context.rect(x * STEP + 1, y * STEP + 1, STEP, STEP));
-    context.fill();
-};
-
 export const drawState = (context: CanvasRenderingContext2D, msg: StateMessage, you: 0 | 1): void => {
-    context.clearRect(0, 0, WIDTH + STEP, HEIGHT + STEP);
-    fillCells(context, [msg.dot], COLORS.Dot);
+    clearBoard(context);
+    drawDot(context, msg.dot);
     msg.snakes.forEach(snake => {
         if (snake) {
-            fillCells(context, snake.body, SNAKE_COLORS[snake.id]);
+            drawSnake(context, snake.body, SNAKE_COLORS[snake.id]);
         }
     });
 

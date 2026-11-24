@@ -3,12 +3,12 @@ import {
     DIRECTIONS,
     MAX_HEIGHT,
     MAX_WIDTH,
-    STEP,
     Direction,
     Point
 } from './config';
 import { intercept } from './utils';
 import info from './info';
+import { clearBoard, drawDot, drawSnake } from './draw';
 
 let SPEED = 100;
 let score = 0;
@@ -16,18 +16,7 @@ let score = 0;
 let direction: Direction = DIRECTIONS.Up;
 let dot: Point = [-1, -1];
 
-const drawSnake = (context: CanvasRenderingContext2D, body: Point[], hide = false): void => {
-    context.beginPath();
-    context.fillStyle = hide ? COLORS.Hidden : COLORS.Main;
-
-    body.forEach(part => {
-        const [x, y] = part;
-        context.rect(x * STEP + 1, y * STEP + 1, STEP, STEP);
-        context.fill();
-    });
-};
-
-const move = (context: CanvasRenderingContext2D, body: Point[]): void => {
+const move = (body: Point[]): void => {
     let [x, y] = body[0];
 
     switch (direction) {
@@ -63,7 +52,7 @@ const move = (context: CanvasRenderingContext2D, body: Point[]): void => {
 
     if (x === dot[0] && y === dot[1]) {
         score++;
-        drawDot(context, body);
+        newDot(body);
         if (SPEED > 40) {
             SPEED -= 2;
         } else if (SPEED > 20) {
@@ -83,27 +72,20 @@ const generateDot = (body: Point[]): void => {
     } while(intercept(body, dot));
 };
 
-const drawDot = (context: CanvasRenderingContext2D, body: Point[]): void => {
-    context.beginPath();
-    context.fillStyle = COLORS.Hidden;
-    context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
-    context.fill();
-
+const newDot = (body: Point[]): void => {
     generateDot(body);
     info({ score });
+};
 
-    context.beginPath();
-    context.rect(dot[0] * STEP + 1, dot[1] * STEP + 1, STEP, STEP);
-
-    context.fillStyle = COLORS.Dot;
-    context.fill();
+const draw = (context: CanvasRenderingContext2D, body: Point[]): void => {
+    clearBoard(context);
+    drawDot(context, dot);
+    drawSnake(context, body, COLORS.Main);
 };
 
 const loop = (context: CanvasRenderingContext2D, body: Point[]): void => {
-    drawSnake(context, body, true);
-
-    move(context, body);
-    drawSnake(context, body);
+    move(body);
+    draw(context, body);
 
     setTimeout(() =>
             requestAnimationFrame(() =>
@@ -160,7 +142,7 @@ const game = (context: CanvasRenderingContext2D): void => {
         [10, 12]
     ];
 
-    drawDot(context, body);
+    newDot(body);
     loop(context, body);
 };
 
